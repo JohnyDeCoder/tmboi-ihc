@@ -110,18 +110,6 @@ async function main() {
             if (isaacY - velocity >= 50) {
               isaacY -= velocity;
             }
-
-            if (intro.paused) {
-              layer.play();
-      
-              let fadeIn = setInterval(function() {
-                  if (layer.volume < 0.4) {
-                      layer.volume += 0.1;
-                  } else {
-                      clearInterval(fadeIn);
-                  }
-              }, 100);
-            }
           }
           else if (result.name === 'down') {
             if (isaacY + velocity <= heightLimit - player.height) {
@@ -133,10 +121,21 @@ async function main() {
               isaacX -= velocity;
             }
           }
-          else {
+          else if (result.name === 'right') {
             if (isaacX + velocity <= widthLimit - player.width) {
               isaacX += velocity;
             }
+          }
+          else {
+            // if (intro.paused) {
+            //   let fadeOut = setInterval(function() {
+            //     if (layer.volume > 0.1) {
+            //         layer.volume -= 0.01;
+            //     } else {
+            //         clearInterval(fadeOut);
+            //     }
+            //   }, 100);
+            // }
           }
           resultLayer[chosenHand].innerText = found
           continue
@@ -155,7 +154,6 @@ async function main() {
 
 // initialize camera
 async function initCamera(width, height, fps) {
-
   // get media stream
   const constraints = {
     audio: false,
@@ -177,7 +175,7 @@ async function initCamera(width, height, fps) {
   video.srcObject = stream
 
   return new Promise(resolve => {
-    video.onloadedmetadata = () => { resolve(video) }
+    video.onloadedmetadata = () => { resolve(video);  }
   })
 }
 
@@ -191,7 +189,6 @@ function drawPoint(ctx, x, y, r, color) {
 
 // on page loaded
 window.addEventListener("DOMContentLoaded", () => {
-
   initCamera(
     config.video.width, config.video.height, config.video.fps
   ).then(video => {
@@ -228,12 +225,8 @@ function drawIsaac(x, y) {
     ctx.drawImage(player, x, y, 50, 64);
 }
 
-function update() {
-  drawIsaac(isaacX, isaacY);
-  requestAnimationFrame(update);
-}
-
-document.onload = update();
+let lastX = isaacX;
+let lastY = isaacY;
 
 // Music Zone
 
@@ -246,12 +239,9 @@ loop.loop = true;
 loop.volume = 0.3;
 
 intro.onended = function() {
-    loop.play();
-
-    if (recognition) {
-        layer.currentTime = 0;
-    }
-};
+  layer.currentTime = 0;
+  loop.play();
+}
 
 intro.play();
 intro.volume = 0;
@@ -266,3 +256,42 @@ let fadeIn = setInterval(function() {
 layer.play();
 layer.loop = true;
 layer.volume = 0;
+
+// End Music Zone
+
+function update() {
+  drawIsaac(isaacX, isaacY);
+
+  // Comprueba si Isaac se ha movido
+  if (isaacX === lastX && isaacY === lastY) {
+    // if (intro.paused) {
+    //   // Isaac se ha quedado quieto
+    //   let fadeOut = setInterval(function() {
+    //     if (layer.volume > 0.1) {
+    //         layer.volume -= 0.1;
+    //     } else {
+    //         clearInterval(fadeOut);
+    //     }
+    //   }, 100);
+    // }
+  } else {
+    if (intro.paused) {
+      // Isaac se ha movido
+      let fadeIn = setInterval(function() {
+          if (layer.volume < 0.4) {
+              layer.volume += 0.1;
+          } else {
+              clearInterval(fadeIn);
+          }
+      }, 100);
+    }
+  }
+
+  // Actualiza las posiciones anteriores para la próxima comprobación
+  lastX = isaacX;
+  lastY = isaacY;
+
+  requestAnimationFrame(update);
+}
+
+document.onload = update();
