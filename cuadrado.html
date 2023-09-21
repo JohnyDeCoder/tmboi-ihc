@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  #canvas {
+    border: 1px solid black;
+    display: block;
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500"></canvas>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  const squareSize = 50;
+  let squareX = canvas.width / 2 - squareSize / 2;
+  let squareY = canvas.height / 2 - squareSize / 2;
+  let velocity = 2;
+
+  function drawSquare(x, y) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(x, y, squareSize, squareSize);
+  }
+
+  function update() {
+    drawSquare(squareX, squareY);
+    requestAnimationFrame(update);
+  }
+
+  document.addEventListener('keydown', (event) => {
+    switch (event.key) {
+      case 'w':
+        if (squareY > 0) squareY -= velocity;
+        break;
+      case 'a':
+        if (squareX > 0) squareX -= velocity;
+        break;
+      case 's':
+        if (squareY < canvas.height - squareSize) squareY += velocity;
+        break;
+      case 'd':
+        if (squareX < canvas.width - squareSize) squareX += velocity;
+        break;
+    }
+  });
+
+  update();
+</script>
+</body>
+</html>
