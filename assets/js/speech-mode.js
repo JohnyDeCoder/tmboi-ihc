@@ -12,28 +12,28 @@ recognition.onresult = (event) => {
     const last = event.results.length - 1;
     const command = event.results[last][0].transcript;
     console.log('Result received: ' + command + '.');
-    if (command.toLowerCase().startsWith('arriba')) {
+    if (command.toLowerCase().contains('arriba')) {
         if (isaacY - velocity >= 50) {
             isaacY -= velocity;
         }
         var audio = new Audio('/assets/sounds/menu/thumbsup.mp3');
             audio.play();
             audio.volume = 0.2;
-    } else if (command.toLowerCase().startsWith('abajo')) {
+    } else if (command.toLowerCase().contains('abajo')) {
         if (isaacY + velocity <= heightLimit - player.height) {
             isaacY += velocity;
         }
         var audio = new Audio('/assets/sounds/menu/thumbsup.mp3');
             audio.play();
             audio.volume = 0.2;
-    } else if (command.toLowerCase().startsWith('izquierda')) {
+    } else if (command.toLowerCase().contains('izquierda')) {
         if (isaacX - velocity >= 50) {
             isaacX -= velocity;
         }
         var audio = new Audio('/assets/sounds/menu/thumbsup.mp3');
             audio.play();
             audio.volume = 0.2;
-    } else if (command.toLowerCase().startsWith('derecha')) {
+    } else if (command.toLowerCase().contains('derecha')) {
         if (isaacX + velocity <= widthLimit - player.width) {
             isaacX += velocity;
         }
