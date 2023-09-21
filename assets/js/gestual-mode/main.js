@@ -110,6 +110,18 @@ async function main() {
             if (isaacY - velocity >= 50) {
               isaacY -= velocity;
             }
+
+            if (intro.paused) {
+              layer.play();
+      
+              let fadeIn = setInterval(function() {
+                  if (layer.volume < 0.4) {
+                      layer.volume += 0.1;
+                  } else {
+                      clearInterval(fadeIn);
+                  }
+              }, 100);
+            }
           }
           else if (result.name === 'down') {
             if (isaacY + velocity <= heightLimit - player.height) {
@@ -222,3 +234,35 @@ function update() {
 }
 
 document.onload = update();
+
+// Music Zone
+
+let intro = new Audio('/assets/sounds/music/burning basement intro.ogg');
+let loop = new Audio('/assets/sounds/music/burning basement loop.ogg');
+let layer = new Audio('/assets/sounds/music/burning basement guitar layer_04.ogg');
+
+loop.load();
+loop.loop = true;
+loop.volume = 0.3;
+
+intro.onended = function() {
+    loop.play();
+
+    if (recognition) {
+        layer.currentTime = 0;
+    }
+};
+
+intro.play();
+intro.volume = 0;
+let fadeIn = setInterval(function() {
+    if (intro.volume < 0.3) {
+        intro.volume += 0.1;
+    } else {
+        clearInterval(fadeIn);
+    }
+}, 100);
+
+layer.play();
+layer.loop = true;
+layer.volume = 0;
