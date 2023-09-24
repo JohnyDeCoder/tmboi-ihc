@@ -261,4 +261,4 @@ function update() {
   requestAnimationFrame(update);
 }
 
-document.onload = update;
+document.onload = update();
