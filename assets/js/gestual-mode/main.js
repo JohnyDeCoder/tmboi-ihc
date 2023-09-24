@@ -99,7 +99,7 @@ async function main() {
 
             if (intro.pause) {
               layer.play();
-              layer.volume = 0.3;
+              layer.volume = 0.2;
               layer.currentTime = loop.currentTime;
             }
           }
@@ -109,7 +109,7 @@ async function main() {
 
             if (intro.pause) {
               layer.play();
-              layer.volume = 0.3;
+              layer.volume = 0.2;
               layer.currentTime = loop.currentTime;
             }
           }
@@ -119,7 +119,7 @@ async function main() {
 
             if (intro.pause) {
               layer.play();
-              layer.volume = 0.3;
+              layer.volume = 0.2;
               layer.currentTime = loop.currentTime;
             }
           }
@@ -129,7 +129,7 @@ async function main() {
 
             if (intro.pause) {
               layer.play();
-              layer.volume = 0.3;
+              layer.volume = 0.2;
               layer.currentTime = loop.currentTime;
             }
           }
@@ -226,9 +226,6 @@ function drawIsaac(x, y) {
   ctx.drawImage(player, x, y, 50, 64);
 }
 
-let lastX = isaacX;
-let lastY = isaacY;
-
 // Music Zone
 
 let intro = new Audio("/assets/sounds/music/burning basement intro.ogg");
@@ -239,7 +236,7 @@ let layer = new Audio(
 
 loop.load();
 loop.loop = true;
-loop.volume = 0.3;
+loop.volume = 0.2;
 
 intro.onended = function () {
   layer.currentTime = 0;
@@ -250,7 +247,7 @@ intro.play();
 intro.volume = 0;
 
 let fadeIn = setInterval(function () {
-  if (intro.volume < 0.3) {
+  if (intro.volume < 0.2) {
     intro.volume += 0.1;
   } else {
     clearInterval(fadeIn);
