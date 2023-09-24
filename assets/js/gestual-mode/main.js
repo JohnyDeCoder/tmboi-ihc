@@ -83,9 +83,6 @@ async function main() {
         keypoint.z,
       ]);
       const predictions = GE.estimate(keypoints3D, 9);
-      if (!predictions.gestures.length) {
-      }
-
       // find gesture with highest confidence
       if (predictions.gestures.length > 0) {
         // find gesture with highest confidence
@@ -126,7 +123,7 @@ async function main() {
               layer.currentTime = loop.currentTime;
             }
           }
-        } else {
+        } else if (result.name === "right") {
           if (isaacX + velocity <= widthLimit - player.width) {
             isaacX += velocity;
 
@@ -136,6 +133,8 @@ async function main() {
               layer.currentTime = loop.currentTime;
             }
           }
+        } else {
+          layer.pause();
         }
         resultLayer[chosenHand].innerText = found;
         continue;
@@ -265,4 +264,4 @@ function update() {
   requestAnimationFrame(update);
 }
 
-document.onload = update();
+document.onload = update;
