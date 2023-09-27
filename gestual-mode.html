@@ -19,9 +19,6 @@
     <link rel="stylesheet" href="./assets/css/styles.css" />
   </head>
   <body style="background-color: #000000">
-    <div id="loading-screen" class="loading-screen">
-      <div class="loading-text">Cargando el modelo...</div>
-    </div>
     <div class="container">
       <div class="row">
         <div class="col-md-12 mt-3">
@@ -53,9 +50,9 @@
         </div>
       </div>
       <div class="row mt-3 mb-3">
-        <div class="col-md-12">
+        <div class="col-md-12 fixed-bottom">
           <div
-            class="d-flex justify-content-center align-items-center text-center"
+            class="d-flex justify-content-end align-items-center text-center"
           >
             <div id="video-container">
               <video
@@ -63,9 +60,14 @@
                 class="layer border border-light rounded"
                 playsinline
               ></video>
+              <div
+                class="paper-top pb-2 pb-sm-1 position-relative"
+                id="labelCamara"
+              >
+                Cámara
+              </div>
               <canvas id="pose-canvas" class="layer"></canvas>
               <div id="pose-result-left" class="layer pose-result"></div>
-              <br />
               <div id="pose-result-right" class="layer pose-result"></div>
             </div>
           </div>

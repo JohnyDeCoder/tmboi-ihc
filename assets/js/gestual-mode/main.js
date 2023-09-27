@@ -97,44 +97,42 @@ async function main() {
           if (isaacY - velocity >= 50) {
             isaacY -= velocity;
 
-            if (intro.pause) {
+            if (intro.paused) {
               layer.play();
-              layer.volume = 0.2;
               layer.currentTime = loop.currentTime;
+              layer.volume = 0.2;
             }
           }
         } else if (result.name === "down") {
-          if (isaacY + velocity <= heightLimit - player.height) {
+          if (isaacY + velocity <= heightLimit - 70) {
             isaacY += velocity;
 
-            if (intro.pause) {
+            if (intro.paused) {
               layer.play();
-              layer.volume = 0.2;
               layer.currentTime = loop.currentTime;
+              layer.volume = 0.2;
             }
           }
         } else if (result.name === "left") {
           if (isaacX - velocity >= 50) {
             isaacX -= velocity;
 
-            if (intro.pause) {
+            if (intro.paused) {
               layer.play();
-              layer.volume = 0.2;
               layer.currentTime = loop.currentTime;
+              layer.volume = 0.2;
             }
           }
         } else if (result.name === "right") {
-          if (isaacX + velocity <= widthLimit - player.width) {
+          if (isaacX + velocity <= widthLimit - 56) {
             isaacX += velocity;
 
-            if (intro.pause) {
+            if (intro.paused) {
               layer.play();
-              layer.volume = 0.2;
               layer.currentTime = loop.currentTime;
+              layer.volume = 0.2;
             }
           }
-        } else {
-          layer.pause();
         }
         resultLayer[chosenHand].innerText = found;
         continue;
@@ -225,7 +223,7 @@ const heightLimit = canvas.height - 50; // Límite del alto del canvas
 
 let isaacX = widthLimit / 2; // Posición inicial X
 let isaacY = heightLimit / 2; // Posición inicial Y
-let velocity = 15; // Velocidad de movimiento
+let velocity = 5; // Velocidad de movimiento
 
 const frameRate = 10; // Fotogramas por segundo
 let lastFrameTime = 0; // Tiempo del último frame
