@@ -23,7 +23,7 @@ recognition.onresult = (event) => {
     audio.play();
     audio.volume = 0.4;
   } else if (command.toLowerCase().includes("abajo")) {
-    if (isaacY + velocity <= heightLimit - player.height) {
+    if (isaacY + velocity <= heightLimit - 70) {
       isaacY += velocity;
     }
     let audio = new Audio("/assets/sounds/menu/thumbsup.mp3");
@@ -37,7 +37,7 @@ recognition.onresult = (event) => {
     audio.play();
     audio.volume = 0.4;
   } else if (command.toLowerCase().includes("derecha")) {
-    if (isaacX + velocity <= widthLimit - player.width) {
+    if (isaacX + velocity <= widthLimit - 56) {
       isaacX += velocity;
     }
     let audio = new Audio("/assets/sounds/menu/thumbsup.mp3");
@@ -55,31 +55,55 @@ recognition.onerror = function (event) {
   console.log("Error occurred in recognition: " + event.error);
 };
 
+// Canvas
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const widthLimit = canvas.width - 50;
-const heightLimit = canvas.height - 50;
+let theLostSprites = [];
 
-let isaacX = widthLimit / 2;
-let isaacY = heightLimit / 2;
-let velocity = 10;
-
-let player = new Image();
-
-player.src = "/assets/img/the_lost.png";
-
-function drawIsaac(x, y) {
-  ctx.clearRect(0, 0, widthLimit, heightLimit);
-  ctx.drawImage(player, x, y, 50, 64);
+for (let i = 1; i < 6; i++) {
+  const img = new Image();
+  img.src = `/assets/img/the-lost-sprites/${i}.png`;
+  theLostSprites.push(img);
 }
 
-function update() {
-  drawIsaac(isaacX, isaacY);
-  requestAnimationFrame(update);
+// Estado inicial
+const widthLimit = canvas.width - 50; // Límite del ancho del canvas
+const heightLimit = canvas.height - 50; // Límite del alto del canvas
+
+let isaacX = widthLimit / 2; // Posición inicial X
+let isaacY = heightLimit / 2; // Posición inicial Y
+let velocity = 15; // Velocidad de movimiento
+
+const frameRate = 10; // Fotogramas por segundo
+let lastFrameTime = 0; // Tiempo del último frame
+let frame = 0; // Frame actual
+
+function animate(timestamp) {
+  // Calcular el tiempo transcurrido desde el último frame
+  const deltaTime = timestamp - lastFrameTime;
+
+  // Si ya pasó el tiempo suficiente para mostrar el siguiente frame
+  if (deltaTime >= 1000 / frameRate) {
+    // Limpiar el canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Dibujar a Isaac
+    ctx.drawImage(theLostSprites[frame], isaacX, isaacY, 56, 70);
+
+    // Avanzar al siguiente frame del cuerpo
+    frame = (frame + 1) % 5;
+
+    // Actualizar el tiempo del último frame
+    lastFrameTime = timestamp;
+  }
+
+  // Pedir al navegador que ejecute la función animate en el siguiente frame
+  requestAnimationFrame(animate);
 }
 
-document.onload = update();
+animate(); // Iniciar la animación
 
 // Music Zone
 
@@ -117,6 +141,10 @@ function startRecognition() {
   startSound.play();
   startSound.volume = 0.2;
   document.getElementById("start_button").remove();
+
+  const element = document.getElementById("listening-text");
+  element.innerHTML =
+    '<i class="fa-solid fa-microphone fa-xs"></i> ' + "escuchando...";
   playLayer();
   recognition.start();
   console.log("Speech recognition started");

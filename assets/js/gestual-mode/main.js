@@ -206,25 +206,55 @@ window.addEventListener("DOMContentLoaded", () => {
   console.log("Canvas initialized");
 });
 
-// Isaac Canvas
+// Canvas
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const widthLimit = canvas.width - 50;
-const heightLimit = canvas.height - 50;
+let theLostSprites = [];
 
-let isaacX = widthLimit / 2;
-let isaacY = heightLimit / 2;
-let velocity = 5;
-
-let player = new Image();
-
-player.src = "/assets/img/the_lost.png";
-
-function drawIsaac(x, y) {
-  ctx.clearRect(0, 0, widthLimit, heightLimit);
-  ctx.drawImage(player, x, y, 50, 64);
+for (let i = 1; i < 6; i++) {
+  const img = new Image();
+  img.src = `/assets/img/the-lost-sprites/${i}.png`;
+  theLostSprites.push(img);
 }
+
+// Estado inicial
+const widthLimit = canvas.width - 50; // Límite del ancho del canvas
+const heightLimit = canvas.height - 50; // Límite del alto del canvas
+
+let isaacX = widthLimit / 2; // Posición inicial X
+let isaacY = heightLimit / 2; // Posición inicial Y
+let velocity = 15; // Velocidad de movimiento
+
+const frameRate = 10; // Fotogramas por segundo
+let lastFrameTime = 0; // Tiempo del último frame
+let frame = 0; // Frame actual
+
+function animate(timestamp) {
+  // Calcular el tiempo transcurrido desde el último frame
+  const deltaTime = timestamp - lastFrameTime;
+
+  // Si ya pasó el tiempo suficiente para mostrar el siguiente frame
+  if (deltaTime >= 1000 / frameRate) {
+    // Limpiar el canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Dibujar a Isaac
+    ctx.drawImage(theLostSprites[frame], isaacX, isaacY, 56, 70);
+
+    // Avanzar al siguiente frame del cuerpo
+    frame = (frame + 1) % 5;
+
+    // Actualizar el tiempo del último frame
+    lastFrameTime = timestamp;
+  }
+
+  // Pedir al navegador que ejecute la función animate en el siguiente frame
+  requestAnimationFrame(animate);
+}
+
+animate(); // Iniciar la animación
 
 // Music Zone
 
@@ -255,10 +285,3 @@ let fadeIn = setInterval(function () {
 }, 100);
 
 // End Music Zone
-
-function update() {
-  drawIsaac(isaacX, isaacY);
-  requestAnimationFrame(update);
-}
-
-document.onload = update();
